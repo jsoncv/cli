@@ -1,5 +1,8 @@
 # JSON CV's CLI
 
+[![GitHub Releases](https://badgen.net/github/tag/jsoncv/cli)](https://github.com/jsoncv/cli/releases)
+[![NPM Release](https://badgen.net/npm/v/@jsoncv/cli)](https://www.npmjs.com/package/@jsoncv/cli)
+
 Command Line Interface (CLI) for interacting with JSON CVs.
 
 - [Installation](#installation)
