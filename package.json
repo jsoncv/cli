@@ -32,14 +32,17 @@
   "bugs": {
     "url": "https://github.com/jsoncv/cli/issues"
   },
-  "files": ["build/**/*"],
+  "files": ["bin/**/*"],
   "dependencies": {
     "commander": "^8.1.0",
-    "@jsoncv/core": "^0.1.0"
+    "chalk": "^4.1.0",
+    "lodash": "^4.17.21",
+    "@jsoncv/core": "^0.1.1"
   },
   "devDependencies": {
     "typescript": "^4.3.5",
     "@tsconfig/node14": "^1.0.1",
-    "@types/node": "^14.17.10"
+    "@types/node": "^14.17.10",
+    "@types/lodash": "^4.14.172"
   }
 }
