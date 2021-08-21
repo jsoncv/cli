@@ -18,7 +18,8 @@ program
             console.log('No Input')
         } else {
             try {
-                const cv = require(`../${file}`)
+                const cwd = process.cwd()
+                const cv = require(`${cwd}/${file}`)
                 console.log('Checking...\r')
                 validator(cv)
             } catch (e) {
