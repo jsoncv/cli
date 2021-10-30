@@ -3,9 +3,6 @@
 import { Command } from 'commander';
 import { validator, server } from '@jsoncv/core'
 import { isNil } from 'lodash'
-import fs from 'fs'
-import { cwd } from 'process'
-import http, {IncomingMessage, RequestListener, ServerResponse} from 'http'
 
 const pkg = require('../package.json')
 const program = new Command();
