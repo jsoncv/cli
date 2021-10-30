@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { validator } from '@jsoncv/core'
+import { validator, server } from '@jsoncv/core'
 import { isNil } from 'lodash'
 import fs from 'fs'
-import { cwd } from 'process';
+import { cwd } from 'process'
 import http, {IncomingMessage, RequestListener, ServerResponse} from 'http'
 
 const pkg = require('../package.json')
@@ -20,18 +20,17 @@ program
         if (isNil(file)) {
             console.log('No Input')
         } else {
-            try {
-                const cwd = process.cwd()
-                const cv = require(`${cwd}/${file}`)
-                console.log('Checking...\r')
-                validator(cv)
-            } catch (e) {
-                if (e.code === 'MODULE_NOT_FOUND') {
-                    console.log('Error: File not found')
-                } else {
-                    console.log(e)
-                }
-            }
+            console.log('Checking...\r')
+            // TODO: Validator (Loading Data) should work on URL and File
+            // It is not tested or implemented in URL, It is already working in File
+            validator(file)
+                .then(() => {
+                    console.log('CV is valid.')
+                })
+                .catch((errors:any) => {
+                    console.log('CV is not valid! Errors:')
+                    console.log(errors)
+                })
         }
     }).addHelpText('after', `
 Examples:
@@ -44,30 +43,16 @@ program
     .option('-p, --port <port>', 'Serving port', '2314')
     .description('Serves the CV as a web service')
     .action((cv:string, options) => {
-        const isTemplateLocationAbsolute = options.template.startsWith('/')
-        const templateModuleLocation = isTemplateLocationAbsolute ? `${options.template}` : `${cwd()}/${options.template}`
-        import(`${templateModuleLocation}/index.js`)
-            .then(templateModule => {
-                console.log(`Running on http://localhost:${options.port}`)
-
-                const listener:RequestListener = (req:IncomingMessage, res:ServerResponse) => {
-                    res.writeHead(200, { 'content-type': 'text/html' })
-                    const cvText = fs.readFileSync(cv).toString()
-                    const cvJson = JSON.parse(cvText)
-                    res.write('<pre>')
-                    res.write(templateModule.render(cvJson))
-                    res.write('</pre>')
-                    res.end()
-                }
-                const server = http.createServer(listener)
-                server.listen(options.port)
+        // TODO: Validator (Loading Data) should work on URL and File
+        // It is not tested or implemented in URL, It is already working in File
+        validator(cv)
+            .then(() => {
+                server.serve(options.template, cv, options.port)
             })
-            .catch(err => {
-                if (err.code === 'MODULE_NOT_FOUND') {
-                    console.log('The template is not valid!')
-                } else {
-                    console.log(err)
-                }
+            .catch(() => {
+                console.log('CV is not valid!')
+                console.log('Make sure to provide a valid JSONCV file.')
+                console.log(`Try \`jsoncv validate ${cv}\` for more detail.`)
             })
     }).addHelpText('after', `
 Examples:
