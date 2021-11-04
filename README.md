@@ -7,6 +7,7 @@ Command Line Interface (CLI) for interacting with JSON CVs.
 
 - [Installation](#installation)
 - [Validation using CLI](#validation-using-cli)
+- [Serving CV as Web Server](#serving-cv-as-web-server)
 
 ## Installation
 
