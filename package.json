@@ -1,6 +1,6 @@
 {
   "name": "@jsoncv/cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "CLI for JSON CV",
   "license": "MIT",
   "bin": {
@@ -19,7 +19,8 @@
     "resume"
   ],
   "scripts": {
-    "serve": "tsc -w -d"
+    "serve": "tsc -w -d",
+    "build": "tsc -d"
   },
   "engines": {
     "node": ">=14.15.0"
