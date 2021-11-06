@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { validator, server } from '@jsoncv/core'
+import { validator, server, exportToHtml } from '@jsoncv/core'
 import { isNil } from 'lodash'
-
 const pkg = require('../package.json')
-const program = new Command();
+
+const program = new Command()
 
 program
-    .version(pkg.version);
+    .version(pkg.version)
 
 program
     .command('validate [file]')
@@ -30,7 +30,7 @@ program
     }).addHelpText('after', `
 Examples:
   $ jsoncv validate cv.json`
-);
+)
 
 program
     .command('serve [cv]')
@@ -50,6 +50,26 @@ program
     }).addHelpText('after', `
 Examples:
   $ jsoncv serve cv.json`
-);
+)
+
+program
+    .command('export [cv]')
+    .option('-t, --template <location>', 'Location of the template', './')
+    .option('-o, --output <file>', 'Name and the location of the output file', './cv.html')
+    .description('Saves the CV as an HTML page')
+    .action((cv:string, options) => {
+        validator(cv)
+            .then(() => {
+                exportToHtml(options.template, cv, options.output)
+            })
+            .catch(() => {
+                console.log('CV is not valid!')
+                console.log('Make sure to provide a valid JSONCV file.')
+                console.log(`Try \`jsoncv validate ${cv}\` for more detail.`)
+            })
+    }).addHelpText('after', `
+Examples:
+  $ jsoncv export cv.json`
+)
 
 program.parse(process.argv);
